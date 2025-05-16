@@ -9,7 +9,7 @@ public class TokenValidator {
         this.provider = provider;
     }
 
-    public String validate(String token) {
+    public String run(String token) {
         return this.provider.decodeJWT(token);
     }
 }
