@@ -31,11 +31,12 @@ public class JwtFilter extends OncePerRequestFilter {
         this.loader = loader;
     }
 
-    private static final List<String> excludedPaths = List.of("/health");
+    private static final List<String> excludedPaths = List.of("/health", "/h2-console");
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
+        System.out.println(path);
         return excludedPaths.stream().anyMatch(excludedPath -> new AntPathMatcher().match(path, excludedPath));
     }
 
