@@ -14,10 +14,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -29,30 +31,46 @@ public class JwtFilter extends OncePerRequestFilter {
         this.loader = loader;
     }
 
+    private static final List<String> excludedPaths = List.of("/health");
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return excludedPaths.stream().anyMatch(excludedPath -> new AntPathMatcher().match(path, excludedPath));
+    }
+
+    private void withForbiddenResponse(HttpServletResponse response) throws IOException {
+        HashMap<Object, Object> model = new HashMap<>();
+        model.put("message", "Invalid Token");
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().print(new ObjectMapper().writeValueAsString(model));
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
 
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring(7);
+        if (header == null || !header.startsWith("Bearer ")) {
+            this.withForbiddenResponse(response);
+            return;
+        }
 
-            try {
-                String email = this.provider.decodeJWT(token);
-                UserDetailsAdapter userDetailsAdapter = (UserDetailsAdapter) this.loader.loadUserByUsername(email);
+        String token = header.substring(7);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetailsAdapter, null, userDetailsAdapter.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            String email = this.provider.decodeJWT(token);
+            UserDetailsAdapter userDetailsAdapter = (UserDetailsAdapter) this.loader.loadUserByUsername(email);
 
-                filterChain.doFilter(request, response);
-            } catch (SignatureVerificationException | TokenExpiredException | JWTDecodeException e) {
-                HashMap<Object, Object> model = new HashMap<>();
-                model.put("message", "Invalid Token");
-
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.setContentType("application/json");
-                response.getWriter().write(new ObjectMapper().writeValueAsString(model));
-            }
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetailsAdapter, null, userDetailsAdapter.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+        } catch (SignatureVerificationException | TokenExpiredException | JWTDecodeException e) {
+            SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
+            this.withForbiddenResponse(response);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.componentsshop.apps.backend.config;
 
+import com.componentsshop.apps.backend.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,17 +8,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig {
+    private JwtFilter filter;
+
+    SecurityConfig(final JwtFilter filter) {
+        this.filter = filter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authorizeRequests -> { authorizeRequests.anyRequest().permitAll(); })
+                .authorizeHttpRequests(authorizeRequests -> {
+                    authorizeRequests.requestMatchers("/*").permitAll();
+                })
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+            http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
