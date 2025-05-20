@@ -32,6 +32,16 @@ public class UserJPAEntity implements Serializable {
 
     }
 
+    public UserJPAEntity(int id, String name, String email, String password, String direction, LocalDate birthdate, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.direction = direction;
+        this.birthdate = birthdate;
+        this.role = role;
+    }
+
     public int getId() {
         return id;
     }
