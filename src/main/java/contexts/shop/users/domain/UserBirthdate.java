@@ -6,18 +6,17 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class UserBirthdate {
-    private Date birthdate;
+    private final LocalDate birthdate;
 
-    public UserBirthdate(Date birthdate) {
+    public UserBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
         this.ensureUserAgeAbove18();
     }
 
     public void ensureUserAgeAbove18() throws UserAgeNotValid {
-        LocalDate birthDate = this.birthdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate now = LocalDate.now();
 
-        if(Period.between(birthDate, now).getYears() < 18){
+        if(Period.between(this.birthdate, now).getYears() < 18){
             throw new UserAgeNotValid("User birthdate is too young.");
         }
     }
