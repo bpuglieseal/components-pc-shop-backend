@@ -18,6 +18,6 @@ public class HealthCheckController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        return new ResponseEntity<Object>(object, headers, HttpStatus.CREATED);
+        return new ResponseEntity<Object>(object, headers, HttpStatus.OK);
     }
 }
