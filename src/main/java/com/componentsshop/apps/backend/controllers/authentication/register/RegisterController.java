@@ -4,6 +4,7 @@ import contexts.shop.users.application.register.UserRegister;
 import contexts.shop.users.application.register.UserRegisterRequest;
 import contexts.shop.users.application.register.UserRegisterResponse;
 import contexts.shop.users.domain.UserAlreadyExists;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +25,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterControllerRequest body) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterControllerRequest body) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {

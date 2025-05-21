@@ -5,6 +5,7 @@ import contexts.shop.users.application.login.UserLoginRequest;
 import contexts.shop.users.application.login.UserLoginResponse;
 import contexts.shop.users.domain.UserNotExists;
 import contexts.shop.users.domain.UserWrongCredentials;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginControllerRequest body) {
+    public ResponseEntity<String> login(@RequestBody @Valid LoginControllerRequest body) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {
