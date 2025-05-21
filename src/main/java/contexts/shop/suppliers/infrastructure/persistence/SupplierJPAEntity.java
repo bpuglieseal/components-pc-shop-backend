@@ -1,15 +1,12 @@
 package contexts.shop.suppliers.infrastructure.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "suppliers")
 public class SupplierJPAEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String country;
