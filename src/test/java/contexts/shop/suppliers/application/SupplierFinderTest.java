@@ -1,5 +1,8 @@
-package contexts.shop.suppliers.application.finder;
+package contexts.shop.suppliers.application;
 
+import contexts.shop.suppliers.application.finder.SupplierFinder;
+import contexts.shop.suppliers.application.finder.SupplierFinderRequest;
+import contexts.shop.suppliers.application.finder.SupplierFinderResponse;
 import contexts.shop.suppliers.domain.Supplier;
 import contexts.shop.suppliers.domain.SupplierNotExists;
 import contexts.shop.suppliers.infrastructure.persistence.SupplierJPAEntity;
