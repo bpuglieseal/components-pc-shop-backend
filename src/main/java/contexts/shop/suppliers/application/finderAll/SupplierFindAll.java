@@ -19,7 +19,7 @@ public class SupplierFindAll {
 
     public SupplierFindAllResponse run() {
         ArrayList<SupplierJPAEntity> entities = new ArrayList<>(this.repository.findAll());
-        ArrayList<Supplier> suppliers = entities.stream().map(SupplierMapper::fromPersitenceEntityToDomain).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<Supplier> suppliers = entities.stream().map(SupplierMapper::fromPersistenceEntityToDomain).collect(Collectors.toCollection(ArrayList::new));
         return new SupplierFindAllResponse(suppliers);
     }
 }

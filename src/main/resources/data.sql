@@ -19,3 +19,18 @@ INSERT INTO suppliers (name, country) VALUES
 ('Hardware Express S.A.', 'Brasil'),
 ('AlpinaTech GmbH', 'Austria'),
 ('Meditech Solutions', 'Canadá');
+
+-- Categories Table
+INSERT INTO categories (name, description) VALUES
+('Procesadores', 'Unidades centrales de procesamiento de alto rendimiento'),
+('Tarjetas Gráficas', 'GPUs para gaming, edición y renderizado'),
+('Placas Base', 'Motherboards compatibles con diversas arquitecturas'),
+('Memorias RAM', 'Módulos de memoria de distintas velocidades y capacidades'),
+('Almacenamiento', 'Discos SSD y HDD para guardar tus datos'),
+('Fuentes de Poder', 'Suministro eléctrico confiable para tu PC'),
+('Gabinetes', 'Cajas con diseños y tamaños variados para ensamblar tu equipo'),
+('Refrigeración', 'Soluciones térmicas: ventiladores, coolers y líquidas'),
+('Periféricos', 'Teclados, ratones y otros accesorios externos'),
+('Monitores', 'Pantallas para gaming, oficina y trabajo profesional'),
+('Audio', 'Auriculares, altavoces y tarjetas de sonido'),
+('Redes', 'Adaptadores, routers y tarjetas de red');

@@ -4,7 +4,7 @@ import contexts.shop.suppliers.domain.Supplier;
 import contexts.shop.suppliers.infrastructure.persistence.SupplierJPAEntity;
 
 public class SupplierMapper {
-    public static Supplier fromPersitenceEntityToDomain (SupplierJPAEntity supplierJPAEntity) {
+    public static Supplier fromPersistenceEntityToDomain (SupplierJPAEntity supplierJPAEntity) {
         return new Supplier(supplierJPAEntity.getId(), supplierJPAEntity.getName(), supplierJPAEntity.getCountry());
     }
 

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
-public class FindAllSuppliersController {
+public class SuppliersFindAllController {
     private final SupplierFindAll findAll;
 
-    FindAllSuppliersController(SupplierFindAll findAll) {
+    SuppliersFindAllController(SupplierFindAll findAll) {
         this.findAll = findAll;
     }
 

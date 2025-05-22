@@ -19,7 +19,7 @@ public class SupplierFinder {
     public SupplierFinderResponse run (SupplierFinderRequest request) {
         Optional<SupplierJPAEntity> entity = repository.findById(request.getId());
         return entity
-                .map(e -> new SupplierFinderResponse(SupplierMapper.fromPersitenceEntityToDomain(e)))
+                .map(e -> new SupplierFinderResponse(SupplierMapper.fromPersistenceEntityToDomain(e)))
                 .orElseThrow(() -> new SupplierNotExists(String.format("Supplier with id %s not found", request.getId())));
     }
 }
