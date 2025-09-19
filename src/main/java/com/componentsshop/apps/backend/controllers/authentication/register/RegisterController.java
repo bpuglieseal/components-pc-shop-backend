@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class RegisterController {
@@ -25,7 +26,7 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterControllerRequest body) {
+    public ResponseEntity<HashMap<String, Object>> register(@Valid @RequestBody RegisterControllerRequest body) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {
@@ -37,11 +38,11 @@ public class RegisterController {
             response.put("token", token.getToken());
             response.put("status", HttpStatus.CREATED.value());
 
-            return new ResponseEntity<>(response.toString(), HttpStatus.CREATED);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (UserAlreadyExists e) {
             response.put("status", HttpStatus.CONFLICT.value());
             response.put("message", e.getMessage());
-            return new ResponseEntity<>(response.toString(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
     }
 }

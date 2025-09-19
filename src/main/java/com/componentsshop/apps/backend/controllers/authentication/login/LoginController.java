@@ -23,7 +23,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginControllerRequest body) {
+    public ResponseEntity<HashMap<String, Object>> login(@RequestBody @Valid LoginControllerRequest body) {
         HashMap<String, Object> response = new HashMap<>();
 
         try {
@@ -35,10 +35,10 @@ public class LoginController {
             response.put("token", token.getToken());
             response.put("status", HttpStatus.OK.value());
 
-            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (UserNotExists | UserWrongCredentials e) {
             response.put("message", e.getMessage());
-            return new ResponseEntity<>(response.toString(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
 }
