@@ -19,6 +19,7 @@ public class RegisterControllerRequest {
     @NotNull
     private String direction;
 
+    @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateOfBirth;
 
